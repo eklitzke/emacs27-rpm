@@ -1,6 +1,8 @@
 %global _hardened_build 1
-%global enable_lucid 1
-%global enable_nox 1
+
+# disable these for now until .pdmp is fixed
+%global enable_lucid 0
+%global enable_nox 0
 
 # This file is encoded in UTF-8.  -*- coding: utf-8 -*-
 Summary:       GNU Emacs text editor
