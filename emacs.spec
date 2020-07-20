@@ -258,7 +258,7 @@ LDFLAGS=-Wl,-z,relro;  export LDFLAGS;
 
 %configure --with-dbus --with-gif --with-jpeg --with-png --with-rsvg \
            --with-tiff --with-xft --with-xpm --with-x-toolkit=lucid --with-gpm=no \
-           --with-modules
+           --with-modules --enable-link-time-optimization
 make bootstrap
 %{setarch} %make_build
 cd ..
@@ -266,7 +266,7 @@ cd ..
 # Build binary without X support
 mkdir build-nox && cd build-nox
 ln -s ../configure .
-%configure --with-x=no --with-modules
+%configure --with-x=no --with-modules --enable-link-time-optimization
 %{setarch} %make_build
 cd ..
 
