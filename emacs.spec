@@ -246,7 +246,7 @@ LDFLAGS=-Wl,-z,relro;  export LDFLAGS;
            --with-tiff --with-xft --with-xpm --with-x-toolkit=gtk3 --with-gpm=no \
            --with-xwidgets --with-modules \
            --with-cairo --enable-link-time-optimization
-make bootstrap
+%make_build bootstrap
 %{setarch} %make_build
 cd ..
 
@@ -259,7 +259,7 @@ LDFLAGS=-Wl,-z,relro;  export LDFLAGS;
 %configure --with-dbus --with-gif --with-jpeg --with-png --with-rsvg \
            --with-tiff --with-xft --with-xpm --with-x-toolkit=lucid --with-gpm=no \
            --with-modules --enable-link-time-optimization
-make bootstrap
+%make_build bootstrap
 %{setarch} %make_build
 cd ..
 
