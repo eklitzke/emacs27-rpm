@@ -1,4 +1,6 @@
 %global _hardened_build 1
+%global enable_lucid 0
+%global enable_nox 0
 
 # This file is encoded in UTF-8.  -*- coding: utf-8 -*-
 Summary:       GNU Emacs text editor
@@ -76,8 +78,10 @@ BuildRequires: webkit2gtk3-devel
 
 BuildRequires: gnupg2
 
+%if %{enable_lucid}
 # For lucid
 BuildRequires: Xaw3d-devel
+%endif
 
 %ifarch %{ix86}
 BuildRequires: util-linux
@@ -106,6 +110,7 @@ without leaving the editor.
 
 This package provides an emacs binary with support for X windows.
 
+%if %{enable_lucid}
 %package lucid
 Summary:       GNU Emacs text editor with LUCID toolkit X support
 Requires(preun): %{_sbindir}/alternatives
@@ -121,7 +126,9 @@ without leaving the editor.
 
 This package provides an emacs binary with support for X windows
 using LUCID toolkit.
+%endif
 
+%if %{enable_nox}
 %package nox
 Summary:       GNU Emacs text editor without X support
 Requires(preun): %{_sbindir}/alternatives
@@ -137,6 +144,7 @@ without leaving the editor.
 
 This package provides an emacs binary with no X windows support for running
 on a terminal.
+%endif
 
 %package common
 Summary:       Emacs common files
@@ -250,6 +258,7 @@ LDFLAGS=-Wl,-z,relro;  export LDFLAGS;
 %{setarch} %make_build
 cd ..
 
+%if %{enable_lucid}
 # Build Lucid binary
 mkdir build-lucid && cd build-lucid
 ln -s ../configure .
@@ -262,16 +271,19 @@ LDFLAGS=-Wl,-z,relro;  export LDFLAGS;
 %make_build bootstrap
 %{setarch} %make_build
 cd ..
+%endif
 
+%if %{enable_nox}
 # Build binary without X support
 mkdir build-nox && cd build-nox
 ln -s ../configure .
 %configure --with-x=no --with-modules --enable-link-time-optimization
 %{setarch} %make_build
 cd ..
+%endif
 
 # Remove versioned file so that we end up with .1 suffix and only one DOC file
-rm build-{gtk,lucid,nox}/src/emacs-%{version}.*
+rm -f build-{gtk,lucid,nox}/src/emacs-%{version}.*
 
 # Create pkgconfig file
 cat > emacs.pc << EOF
@@ -306,11 +318,15 @@ touch %{buildroot}%{_bindir}/emacs
 gunzip %{buildroot}%{_datadir}/emacs/%{version}/lisp/jka-compr.el.gz
 gunzip %{buildroot}%{_datadir}/emacs/%{version}/lisp/jka-cmpr-hook.el.gz
 
+%if %{enable_lucid}
 # Install the emacs with LUCID toolkit
 install -p -m 0755 build-lucid/src/emacs %{buildroot}%{_bindir}/emacs-%{version}-lucid
+%endif
 
+%if %{enable_nox}
 # Install the emacs without X
 install -p -m 0755 build-nox/src/emacs %{buildroot}%{_bindir}/emacs-%{version}-nox
+%endif
 
 # Make sure movemail isn't setgid
 chmod 755 %{buildroot}%{emacs_libexecdir}/movemail
@@ -397,6 +413,7 @@ rm %{buildroot}%{_datadir}/icons/hicolor/scalable/mimetypes/emacs-document23.svg
 %posttrans
 %{_sbindir}/alternatives --install %{_bindir}/emacs emacs %{_bindir}/emacs-%{version} 80
 
+%if %{enable_lucid}
 %preun lucid
 %{_sbindir}/alternatives --remove emacs %{_bindir}/emacs-%{version}-lucid
 %{_sbindir}/alternatives --remove emacs-lucid %{_bindir}/emacs-%{version}-lucid
@@ -404,7 +421,9 @@ rm %{buildroot}%{_datadir}/icons/hicolor/scalable/mimetypes/emacs-document23.svg
 %posttrans lucid
 %{_sbindir}/alternatives --install %{_bindir}/emacs emacs %{_bindir}/emacs-%{version}-lucid 70
 %{_sbindir}/alternatives --install %{_bindir}/emacs-lucid emacs-lucid %{_bindir}/emacs-%{version}-lucid 60
+%endif
 
+%if %{enable_nox}
 %preun nox
 %{_sbindir}/alternatives --remove emacs %{_bindir}/emacs-%{version}-nox
 %{_sbindir}/alternatives --remove emacs-nox %{_bindir}/emacs-%{version}-nox
@@ -412,6 +431,7 @@ rm %{buildroot}%{_datadir}/icons/hicolor/scalable/mimetypes/emacs-document23.svg
 %posttrans nox
 %{_sbindir}/alternatives --install %{_bindir}/emacs emacs %{_bindir}/emacs-%{version}-nox 70
 %{_sbindir}/alternatives --install %{_bindir}/emacs-nox emacs-nox %{_bindir}/emacs-%{version}-nox 60
+%endif
 
 %preun common
 %{_sbindir}/alternatives --remove emacs.etags %{_bindir}/etags.emacs
@@ -430,15 +450,19 @@ rm %{buildroot}%{_datadir}/icons/hicolor/scalable/mimetypes/emacs-document23.svg
 %{_datadir}/icons/hicolor/scalable/apps/emacs.svg
 %{_datadir}/icons/hicolor/scalable/mimetypes/emacs-document.svg
 
+%if %{enable_lucid}
 %files lucid
 %{_bindir}/emacs-%{version}-lucid
 %attr(0755,-,-) %ghost %{_bindir}/emacs
 %attr(0755,-,-) %ghost %{_bindir}/emacs-lucid
+%endif
 
+%if %{enable_nox}
 %files nox
 %{_bindir}/emacs-%{version}-nox
 %attr(0755,-,-) %ghost %{_bindir}/emacs
 %attr(0755,-,-) %ghost %{_bindir}/emacs-nox
+%endif
 
 %files common -f common-filelist -f el-filelist
 %config(noreplace) %{_sysconfdir}/skel/.emacs
