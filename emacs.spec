@@ -359,9 +359,8 @@ rm -f %{buildroot}%{_infodir}/dir
 
 # Installing service file
 mkdir -p %{buildroot}%{_userunitdir}
-install -p -m 0644 %SOURCE9 %{buildroot}%{_userunitdir}/emacs.service
 # Emacs 26.1 installs the upstream unit file to /usr/lib64 on 64bit archs, we don't want that
-rm -f %{buildroot}/usr/lib64/systemd/user/emacs.service
+mv %{buildroot}/usr/lib64/systemd/user/emacs.service %{buildroot}%{_userunitdir}/emacs.service
 
 # Install desktop files
 mkdir -p %{buildroot}%{_datadir}/applications
