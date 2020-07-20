@@ -4,12 +4,12 @@
 Summary:       GNU Emacs text editor
 Name:          emacs
 Epoch:         1
-Version:       26.3
-Release:       3%{?dist}
+Version:       27.0.91
+Release:       1%{?dist}
 License:       GPLv3+ and CC0-1.0
 URL:           http://www.gnu.org/software/emacs/
-Source0:       https://ftp.gnu.org/gnu/emacs/emacs-%{version}.tar.xz
-Source1:       https://ftp.gnu.org/gnu/emacs/emacs-%{version}.tar.xz.sig
+Source0:       https://alpha.gnu.org/gnu/emacs/pretest/emacs-%{version}.tar.xz
+Source1:       https://alpha.gnu.org/gnu/emacs/pretest/emacs-%{version}.tar.xz.sig
 # generate the keyring via:
 # wget https://ftp.gnu.org/gnu/gnu-keyring.gpg
 # gpg2 --import gnu-keyring.gpg
@@ -66,6 +66,8 @@ BuildRequires: texinfo
 BuildRequires: gzip
 BuildRequires: desktop-file-utils
 BuildRequires: libacl-devel
+BuildRequires: jansson-devel
+BuildRequires: systemd-devel
 
 BuildRequires: gtk3-devel
 BuildRequires: webkit2gtk3-devel
@@ -468,6 +470,12 @@ rm %{buildroot}%{_datadir}/icons/hicolor/scalable/mimetypes/emacs-document23.svg
 %{_includedir}/emacs-module.h
 
 %changelog
+* Mon Jul 20 2020 Evan Klitzke <evan@eklitzke.org> - 1:27.0.91-1
+- Build for emacs 27
+
+* Thu Apr 16 2020 Dan Čermák <dan.cermak@cgc-instruments.com> - 1:26.3-3
+- Drop dependency on GConf2
+
 * Thu Apr 16 2020 Dan Čermák <dan.cermak@cgc-instruments.com> - 1:26.3-3
 - Drop dependency on GConf2
 
