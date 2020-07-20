@@ -1,6 +1,6 @@
 %global _hardened_build 1
-%global enable_lucid 0
-%global enable_nox 0
+%global enable_lucid 1
+%global enable_nox 1
 
 # This file is encoded in UTF-8.  -*- coding: utf-8 -*-
 Summary:       GNU Emacs text editor
@@ -281,9 +281,6 @@ ln -s ../configure .
 %{setarch} %make_build
 cd ..
 %endif
-
-# Remove versioned file so that we end up with .1 suffix and only one DOC file
-rm -f build-{gtk,lucid,nox}/src/emacs-%{version}.*
 
 # Create pkgconfig file
 cat > emacs.pc << EOF
