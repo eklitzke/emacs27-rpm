@@ -66,6 +66,8 @@ BuildRequires: texinfo
 BuildRequires: gzip
 BuildRequires: desktop-file-utils
 BuildRequires: libacl-devel
+BuildRequires: harfbuzz-devel
+BuildRequires: lcms2-devel
 BuildRequires: jansson-devel
 BuildRequires: systemd-devel
 
@@ -242,7 +244,8 @@ LDFLAGS=-Wl,-z,relro;  export LDFLAGS;
 
 %configure --with-dbus --with-gif --with-jpeg --with-png --with-rsvg \
            --with-tiff --with-xft --with-xpm --with-x-toolkit=gtk3 --with-gpm=no \
-           --with-xwidgets --with-modules
+           --with-xwidgets --with-modules \
+           --with-cairo --with-mailutils
 make bootstrap
 %{setarch} %make_build
 cd ..
