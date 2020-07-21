@@ -1,5 +1,8 @@
 %global _hardened_build 1
 
+%global commit      8bc8565721739510b3286838f1534f29b8869fc4
+%global shortcommit %(c=%{commit}; echo ${c:0:7})
+
 # disable these for now until .pdmp is fixed
 %global enable_lucid 0
 %global enable_nox 0
@@ -9,11 +12,10 @@ Summary:       GNU Emacs text editor
 Name:          emacs
 Epoch:         1
 Version:       27.0.91
-Release:       1%{?dist}
+Release:       20200721.%{shortcommit}.1%{?dist}
 License:       GPLv3+ and CC0-1.0
 URL:           http://www.gnu.org/software/emacs/
-Source0:       https://alpha.gnu.org/gnu/emacs/pretest/emacs-%{version}.tar.xz
-Source1:       https://alpha.gnu.org/gnu/emacs/pretest/emacs-%{version}.tar.xz.sig
+Source0:       https://github.com/emacs-mirror/emacs/archive/%{commit}/%{name}-%{shortcommit}.tar.gz
 # generate the keyring via:
 # wget https://ftp.gnu.org/gnu/gnu-keyring.gpg
 # gpg2 --import gnu-keyring.gpg
@@ -195,12 +197,11 @@ Summary: Development header files for Emacs
 Development header files for Emacs.
 
 %prep
-%{gpgverify} --keyring='%{SOURCE2}' --signature='%{SOURCE1}' --data='%{SOURCE0}'
-%setup -q
+%setup -q -n emacs-%{commit}
 
 %patch1 -p1 -b .spellchecker
 %patch2 -p1 -b .system-crypto-policies
-autoconf
+./autogen.sh
 
 # We prefer our emacs.desktop file
 cp %SOURCE3 etc/emacs.desktop
@@ -214,22 +215,22 @@ grep -v "pong.elc" lisp/Makefile.in > lisp/Makefile.in.new \
 rm -f lisp/play/tetris.el lisp/play/tetris.elc
 rm -f lisp/play/pong.el lisp/play/pong.el
 
-# Sorted list of info files
-%define info_files ada-mode auth autotype bovine calc ccmode cl dbus dired-x ebrowse ede ediff edt efaq-w32 efaq eieio eintr elisp emacs-gnutls emacs-mime emacs epa erc ert eshell eudc eww flymake forms gnus htmlfontify idlwave ido info mairix-el message mh-e newsticker nxml-mode octave-mode org pcl-cvs pgg rcirc reftex remember sasl sc semantic ses sieve smtpmail speedbar srecode todo-mode tramp url vhdl-mode vip viper widget wisent woman
+# # Sorted list of info files
+# %define info_files ada-mode auth autotype bovine calc ccmode cl dbus dired-x ebrowse ede ediff edt efaq-w32 efaq eieio eintr elisp emacs-gnutls emacs-mime emacs epa erc ert eshell eudc eww flymake forms gnus htmlfontify idlwave ido info mairix-el message mh-e newsticker nxml-mode octave-mode org pcl-cvs pgg rcirc reftex remember sasl sc semantic ses sieve smtpmail speedbar srecode todo-mode tramp url vhdl-mode vip viper widget wisent woman
 
-# Since the list of info files has to be maintained, check if all info files
-# from the upstream tarball are actually present in %%info_files.
-cd info
-fs=( $(ls *.info) )
-is=( %info_files  )
-files=$(echo ${fs[*]} | sed 's/\.info//'g | sort | tr -d '\n')
-for i in $(seq 0 $(( ${#fs[*]} - 1 ))); do
-  if test "${fs[$i]}" != "${is[$i]}.info"; then
-    echo Please update %%info_files: ${fs[$i]} != ${is[$i]}.info >&2
-    break
-  fi
-done
-cd ..
+# # Since the list of info files has to be maintained, check if all info files
+# # from the upstream tarball are actually present in %%info_files.
+# cd info
+# fs=( $(ls *.info) )
+# is=( %info_files  )
+# files=$(echo ${fs[*]} | sed 's/\.info//'g | sort | tr -d '\n')
+# for i in $(seq 0 $(( ${#fs[*]} - 1 ))); do
+#   if test "${fs[$i]}" != "${is[$i]}.info"; then
+#     echo Please update %%info_files: ${fs[$i]} != ${is[$i]}.info >&2
+#     break
+#   fi
+# done
+# cd ..
 
 %ifarch %{ix86}
 %define setarch setarch %{_arch} -R
