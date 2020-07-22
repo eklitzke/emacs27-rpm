@@ -1,6 +1,6 @@
 %global _hardened_build 1
 
-%global commit      8bc8565721739510b3286838f1534f29b8869fc4
+%global commit      37e0dbc97242a69da9f02039f5635261a307659a
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 # disable these for now until .pdmp is fixed
@@ -11,7 +11,7 @@
 Summary:       GNU Emacs text editor
 Name:          emacs
 Epoch:         1
-Version:       27.0.91
+Version:       28.0.50
 Release:       20200721.%{shortcommit}.1%{?dist}
 License:       GPLv3+ and CC0-1.0
 URL:           http://www.gnu.org/software/emacs/
@@ -42,6 +42,7 @@ BuildRequires: fontconfig-devel
 BuildRequires: dbus-devel
 BuildRequires: giflib-devel
 BuildRequires: glibc-devel
+BuildRequires: libgccjit-devel
 BuildRequires: libpng-devel
 BuildRequires: libjpeg-turbo-devel
 BuildRequires: libjpeg-turbo
@@ -256,7 +257,7 @@ LDFLAGS=-Wl,-z,relro;  export LDFLAGS;
 %configure --with-dbus --with-gif --with-jpeg --with-png --with-rsvg \
            --with-tiff --with-xft --with-xpm --with-x-toolkit=gtk3 --with-gpm=no \
            --with-xwidgets --with-modules \
-           --with-cairo --enable-link-time-optimization
+           --with-cairo --with-nativecomp --enable-link-time-optimization
 %make_build bootstrap
 %{setarch} %make_build
 cd ..
