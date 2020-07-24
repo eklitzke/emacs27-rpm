@@ -1,6 +1,6 @@
 %global _hardened_build 1
 
-%global commit      8bc8565721739510b3286838f1534f29b8869fc4
+%global commit      96a3b473fa5e152bf2f069f9eca10c370b311c25
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 # disable these for now until .pdmp is fixed
@@ -12,7 +12,7 @@ Summary:       GNU Emacs text editor
 Name:          emacs
 Epoch:         1
 Version:       27.0.91
-Release:       20200721.%{shortcommit}.1%{?dist}
+Release:       20200724.%{shortcommit}.1%{?dist}
 License:       GPLv3+ and CC0-1.0
 URL:           http://www.gnu.org/software/emacs/
 Source0:       https://github.com/emacs-mirror/emacs/archive/%{commit}/%{name}-%{shortcommit}.tar.gz
