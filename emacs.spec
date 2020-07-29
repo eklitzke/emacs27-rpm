@@ -1,8 +1,5 @@
 %global _hardened_build 1
 
-%global commit      73a2f5104331264656ac830c848912af9389a04b
-%global shortcommit %(c=%{commit}; echo ${c:0:7})
-
 # disable these for now until .pdmp is fixed
 %global enable_lucid 0
 %global enable_nox 0
@@ -11,11 +8,11 @@
 Summary:       GNU Emacs text editor
 Name:          emacs
 Epoch:         1
-Version:       27.0.91
-Release:       20200727.%{shortcommit}.1%{?dist}
+Version:       27.1
+Release:       rc1.1%{?dist}
 License:       GPLv3+ and CC0-1.0
 URL:           http://www.gnu.org/software/emacs/
-Source0:       https://github.com/emacs-mirror/emacs/archive/%{commit}/%{name}-%{shortcommit}.tar.gz
+Source0:       https://github.com/emacs-mirror/emacs/archive/emacs-27.1-rc1.tar.gz
 # generate the keyring via:
 # wget https://ftp.gnu.org/gnu/gnu-keyring.gpg
 # gpg2 --import gnu-keyring.gpg
@@ -197,7 +194,7 @@ Summary: Development header files for Emacs
 Development header files for Emacs.
 
 %prep
-%setup -q -n emacs-%{commit}
+%setup -q -n emacs-emacs-%{version}-rc1
 
 %patch1 -p1 -b .spellchecker
 %patch2 -p1 -b .system-crypto-policies
