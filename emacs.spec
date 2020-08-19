@@ -9,10 +9,10 @@ Summary:       GNU Emacs text editor
 Name:          emacs
 Epoch:         1
 Version:       27.1
-Release:       rc1.1%{?dist}
+Release:       1%{?dist}
 License:       GPLv3+ and CC0-1.0
 URL:           http://www.gnu.org/software/emacs/
-Source0:       https://github.com/emacs-mirror/emacs/archive/emacs-27.1-rc1.tar.gz
+Source0:       https://github.com/emacs-mirror/emacs/archive/emacs-27.1.tar.gz
 # generate the keyring via:
 # wget https://ftp.gnu.org/gnu/gnu-keyring.gpg
 # gpg2 --import gnu-keyring.gpg
@@ -194,7 +194,7 @@ Summary: Development header files for Emacs
 Development header files for Emacs.
 
 %prep
-%setup -q -n emacs-emacs-%{version}-rc1
+%setup -q -n emacs-emacs-%{version}
 
 %patch1 -p1 -b .spellchecker
 %patch2 -p1 -b .system-crypto-policies
